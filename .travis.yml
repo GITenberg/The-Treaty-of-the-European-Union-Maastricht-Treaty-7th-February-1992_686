@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: mGg/QEMljEZQ0/UIAjqGghWPTGuEenfNVxKLbk8bWXJzIBdatnM17AHxsXXdLPs59lMYSAdH/H3L7AqOxkQjc2lAlN04UWUZ1qeAllcw8OWZLfPaD5aIlZyDTs31K2F28zzK1LEwvFRgFjv1+eWhVRnHLizVhLZD1FLCSbn+8MgKFkH3jeD7P9yzX2zmqxPmd5bUDtb8B430N1OmpccWT0fa2bMthECsB1P/7fGuW+lQ+9MKQSXOy1ieUfAWiUnvJaNm78HK1Q+lre4kO14n6XP6r/zvWALno+SLN7leRobtvRmFlloC05QAGT5IaXGwOAxNTzTAvwBBX1Yy4+HROuds6zefBm5bjFUG98kukxk8n/m++ZiXbTWRTAuYH2Erx4vqKvfLbN4uriAn8WMkM+PhD+m3D6YSk661GLcwgKpwddmgl4kDzhShZFJ7oTWyufvQsPVOPTGAf0ZLMrjZxOy1fRGWqEHX/CrFIaMtzQRi+fUyAalo6/3aJ2S6dqdgaurUumLdTj4CJXdznEqZFm1LP/mS4usbPoqpgTclm2xVnCCwtB38Bk87R+QxKw+FAtGruafiPrBLKsmlJ9nlqgMUOcJYcQaDAuWEykaSQf8rjrlAtQ9TlCbG8lwVWewXOXU1XLvaVGdgDGHwY69SlLHGM9j3FRqhE342DtUNu1U=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/The-Treaty-of-the-European-Union-Maastricht-Treaty-7th-February-1992_686
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
