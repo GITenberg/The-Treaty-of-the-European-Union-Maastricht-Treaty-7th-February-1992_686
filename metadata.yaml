@@ -1,11 +1,16 @@
 _repo: The-Treaty-of-the-European-Union-Maastricht-Treaty-7th-February-1992_686
-_version: 0.1.0
+_version: 0.2.0
+covers:
+- cover_type: generated
+  image_path: cover.png
 creator:
   author:
     agent_name: European Union
     gutenberg_agent_id: '353'
     url: http://www.gutenberg.org/2009/agents/353
 description: ''
+edition_identifiers:
+  edition_id: http://www.gutenberg.org/ebooks/686#The-Treaty-of-the-European-Union-Maastricht-Treaty-7th-February-1992
 gutenberg_issued: '1996-10-01'
 gutenberg_type: Text
 identifiers:
